@@ -8,9 +8,29 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
+
+	//expected req format
+
+		/*"userId" : " ",
+		"timestamp" : " ",
+		"fingerprint" : [{
+				"mac" : "",
+				"signal" : ""
+		},
+		{
+				"mac" : "",
+				"signal" : ""
+		},
+		{
+				"mac" : "",
+				"signal" : ""
+		}]*/
+
+	//response format
 	res.status(200).json({
-		message: "a POST on this route should triangulate the users location with his fingerprint, and update the database"
-	})
+		"userId" : req.body.userId,
+		"location" : "LAP3"
+			})
 });
 
 router.post("/correct", (req, res, next) => {
