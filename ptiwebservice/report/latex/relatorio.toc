@@ -1,0 +1,54 @@
+\babel@toc {portuguese}{}
+\contentsline {section}{\numberline {1}Introdu\IeC {\c c}\IeC {\~a}o}{2}
+\contentsline {section}{\numberline {2}Arquitetura do sistema}{3}
+\contentsline {section}{\numberline {3}Componentes da infraestrutura de \textit {software} e aplica\IeC {\c c}\IeC {\~o}es}{4}
+\contentsline {subsection}{\numberline {3.1}\textit {WebService}}{4}
+\contentsline {subsubsection}{\numberline {3.1.1}Tecnologias definidas}{5}
+\contentsline {subsubsection}{\numberline {3.1.2}Requisitos n\IeC {\~a}o-funcionais}{6}
+\contentsline {paragraph}{\textit {Prote\IeC {\c c}\IeC {\~a}o da base de dados}}{6}
+\contentsline {paragraph}{Disponibilidade}{6}
+\contentsline {paragraph}{Desenvolvimento}{6}
+\contentsline {paragraph}{Seguran\IeC {\c c}a}{6}
+\contentsline {paragraph}{Tempo de resposta}{6}
+\contentsline {subsubsection}{\numberline {3.1.3}Funcionalidades do \textit {webservice}}{7}
+\contentsline {paragraph}{Localiza\IeC {\c c}\IeC {\~a}o}{7}
+\contentsline {paragraph}{Corre\IeC {\c c}\IeC {\~a}o de localiza\IeC {\c c}\IeC {\~a}o}{7}
+\contentsline {paragraph}{Registar um utilizador}{7}
+\contentsline {paragraph}{Listar utilizadores}{8}
+\contentsline {paragraph}{Consultar utilizador}{8}
+\contentsline {paragraph}{Remover utilizador}{8}
+\contentsline {paragraph}{Alterar utilizador}{8}
+\contentsline {paragraph}{\textit {Login}}{8}
+\contentsline {paragraph}{Listar espa\IeC {\c c}os}{9}
+\contentsline {paragraph}{Adicionar espa\IeC {\c c}os}{9}
+\contentsline {paragraph}{Listar informa\IeC {\c c}\IeC {\~a}o de espa\IeC {\c c}o espec\IeC {\'\i }fico}{9}
+\contentsline {paragraph}{Remover local}{9}
+\contentsline {paragraph}{Alterar informa\IeC {\c c}\IeC {\~o}es de espa\IeC {\c c}os}{9}
+\contentsline {subsection}{\numberline {3.2}Aplica\IeC {\c c}\IeC {\~a}o de posicionamento}{11}
+\contentsline {subsubsection}{\numberline {3.2.1}Estrutura\IeC {\c c}\IeC {\~a}o da aplica\IeC {\c c}\IeC {\~a}o}{11}
+\contentsline {subsubsection}{\numberline {3.2.2}Funcionalidades}{11}
+\contentsline {paragraph}{Utilizador \textit {basic}}{11}
+\contentsline {paragraph}{Utilizador \textit {premium}}{12}
+\contentsline {paragraph}{Donos de Espa\IeC {\c c}o}{12}
+\contentsline {subsubsection}{\numberline {3.2.3}Decis\IeC {\~o}es Android}{13}
+\contentsline {paragraph}{\textit {Plug\&Play}}{13}
+\contentsline {paragraph}{\textit {Login}}{13}
+\contentsline {paragraph}{\textit {Cache}}{13}
+\contentsline {subsubsection}{\numberline {3.2.4}Requisitos n\IeC {\~a}o-funcionais}{13}
+\contentsline {paragraph}{Seguran\IeC {\c c}a}{13}
+\contentsline {paragraph}{Portabilidade/Compatibilidade}{13}
+\contentsline {subsection}{\numberline {3.3}Aplica\IeC {\c c}\IeC {\~a}o gestora de posicionamento}{14}
+\contentsline {subsubsection}{\numberline {3.3.1}Administradores}{14}
+\contentsline {subsubsection}{\numberline {3.3.2}Funcionalidades}{15}
+\contentsline {paragraph}{Adicionar/Alterar/Remover utilizador}{15}
+\contentsline {paragraph}{Adicionar/Alterar/Remover local}{15}
+\contentsline {paragraph}{Consulta}{15}
+\contentsline {subsubsection}{\numberline {3.3.3}Requisitos n\IeC {\~a}o funcionais}{16}
+\contentsline {paragraph}{Requisitos de seguran\IeC {\c c}a}{16}
+\contentsline {paragraph}{Requisitos de usabilidade}{16}
+\contentsline {section}{\numberline {4}Modelos de dados}{17}
+\contentsline {subsection}{\numberline {4.1}Dados de utilizadores}{17}
+\contentsline {subsection}{\numberline {4.2}Dados de locais}{19}
+\contentsline {subsection}{\numberline {4.3}Dados de corre\IeC {\c c}\IeC {\~o}es}{20}
+\contentsline {section}{\numberline {5}Apresenta\IeC {\c c}\IeC {\~a}o final}{21}
+\contentsline {section}{\numberline {6}Conclus\IeC {\~a}o}{22}
