@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 
 // routes middlewares
-const locationRoutes = require('./api/routes/location')
+const locateRoutes = require('./api/routes/locate')
 const spacesRoutes = require('./api/routes/spaces')
 const usersRoutes = require('./api/routes/users')
 mongoose.connect('mongodb+srv://gilgm:' +
@@ -36,7 +36,7 @@ app.use((res, req, next) => {
   }
 })
 
-app.use('/location', locationRoutes)
+app.use('/locate', locateRoutes)
 app.use('/spaces', spacesRoutes)
 app.use('/users', usersRoutes)
 
