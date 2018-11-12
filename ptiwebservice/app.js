@@ -5,14 +5,16 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 
 // routes middlewares
-const locateRoutes = require('./api/routes/locate')
+const locationRoutes = require('./api/routes/location')
 const spacesRoutes = require('./api/routes/spaces')
 const usersRoutes = require('./api/routes/users')
-mongoose.connect('mongodb+srv://gilgm:' +
-  process.env.MONGO_ATLAS_PW +
-  '@wifi-fingerprint-pti-l4gos.mongodb.net/test?retryWrites=true', {
-  useMongoClient: true
+
+mongoose.connect('mongodb+srv://gilgm:' + process.env.MONGO_ATLAS_PW + '@wifi-fingerprint-pti-l4gos.mongodb.net/', {
+  useNewUrlParser: true,
+  dbName: 'fingerprintdb'
 })
+  .then(res => console.log('Connected to database'))
+  .catch(err => console.log('error connecting -> ' + err))
 
 // logging tool
 app.use(morgan('dev'))
@@ -24,19 +26,7 @@ app.use(bodyParser.urlencoded(({
 
 // parse json objects
 app.use(bodyParser.json())
-
-// CORS errors
-app.use((res, req, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
-
-  if (req.method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, PATCH, DELETE')
-    return res.status(200).json({})
-  }
-})
-
-app.use('/locate', locateRoutes)
+app.use('/location', locationRoutes)
 app.use('/spaces', spacesRoutes)
 app.use('/users', usersRoutes)
 
