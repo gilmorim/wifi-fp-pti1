@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const correctionSchema = mongoose.Schema({
-  id: mongoose.Schema.Types.ObjectId,
+  _id: mongoose.Schema.Types.ObjectId,
   receivedCorrections: Number,
   wrongReference: { ref: 'ReferencePoint' },
   correctReference: { ref: 'ReferencePoint' },

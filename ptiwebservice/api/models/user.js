@@ -1,10 +1,11 @@
 const mongoose = require('mongoose')
 
 const userSchema = mongoose.Schema({
-  id: mongoose.Schema.Types.ObjectId,
+  _id: mongoose.Schema.Types.ObjectId,
   email: String,
   rank: String,
   username: String,
+  password: String,
   cardNumber: String,
   cvv: String,
   cardExpiration: String,
