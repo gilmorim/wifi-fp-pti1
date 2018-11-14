@@ -8,7 +8,6 @@ router.get('/', (req, res, next) => {
   User.find()
     .exec()
     .then(docs => {
-      console.log(docs)
       // check arguably not necessary
       if (docs.length >= 0) {
         res.status(200).json(docs)

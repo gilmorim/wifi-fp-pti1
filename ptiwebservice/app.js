@@ -17,6 +17,8 @@ mongoose.connect('mongodb+srv://gilgm:' + process.env.MONGO_ATLAS_PW + '@wifi-fi
   .then(res => console.log('Connected to database'))
   .catch(err => console.log('error connecting -> ' + err))
 
+mongoose.Promise = global.Promise
+
 // logging tool
 app.use(morgan('dev'))
 

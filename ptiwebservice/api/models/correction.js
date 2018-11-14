@@ -2,17 +2,21 @@ const mongoose = require('mongoose')
 
 const correctionSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
-  receivedCorrections: Number,
   wrongReference: {
-    ref: 'ReferencePoint'
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ReferencePoint',
+    required: true
   },
   correctReference: {
-    ref: 'ReferencePoint'
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ReferencePoint',
+    required: true
   },
   corrections: [{
     date: Date,
     intensity: Number
-  }]
+  }],
+  receivedCorrections: Number
 })
 
 module.exports = mongoose.model('Correction', correctionSchema)

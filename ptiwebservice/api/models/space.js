@@ -2,17 +2,24 @@ const mongoose = require('mongoose')
 
 const spaceSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
-  name: String,
+  name: {
+    type: String,
+    required: true
+  },
   description: String,
   additionDate: Date,
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User' },
-  imageFile: String,
-  referencesCount: Number,
+    ref: 'User',
+    required: true },
+  imageFile: {
+    type: String,
+    required: true
+  },
   referencePoints: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'ReferencePoint' }]
+    ref: 'ReferencePoint' }],
+  referencesCount: Number
 })
 
 module.exports = mongoose.model('Space', spaceSchema)

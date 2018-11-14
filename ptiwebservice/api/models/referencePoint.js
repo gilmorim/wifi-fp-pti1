@@ -2,16 +2,26 @@ const mongoose = require('mongoose')
 
 const referencePointSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
-  coordinateX: Number,
-  coordinateY: Number,
+  coordinateX: {
+    type: Number,
+    required: true
+  },
+  coordinateY: {
+    type: Number,
+    required: true
+  },
   space: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Space'
+    ref: 'Space',
+    required: true
   },
-  aps: [{
-    mac: String,
-    intensity: Number
-  }],
+  aps: {
+    type: [{
+      mac: String,
+      intensity: Number
+    }],
+    required: true
+  },
   additionDate: Date
 })
 
