@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 const locationRoutes = require('./api/routes/location')
 const spacesRoutes = require('./api/routes/spaces')
 const usersRoutes = require('./api/routes/users')
+const referencepointsRoutes = require('./api/routes/referencepoints')
 
 mongoose.connect('mongodb+srv://gilgm:' + process.env.MONGO_ATLAS_PW + '@wifi-fingerprint-pti-l4gos.mongodb.net/', {
   useNewUrlParser: true,
@@ -29,6 +30,7 @@ app.use(bodyParser.json())
 app.use('/location', locationRoutes)
 app.use('/spaces', spacesRoutes)
 app.use('/users', usersRoutes)
+app.use('/referencepoints', referencepointsRoutes)
 
 // Error handling
 app.use((req, res, next) => {

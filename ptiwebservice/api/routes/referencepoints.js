@@ -1,11 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const User = require('../models/user')
+const ReferencePoint = require('../models/referencePoint')
 const mongoose = require('mongoose')
 
-// return all users
 router.get('/', (req, res, next) => {
-  User.find()
+  ReferencePoint.find()
     .exec()
     .then(docs => {
       console.log(docs)
@@ -26,41 +25,37 @@ router.get('/', (req, res, next) => {
     })
 })
 
-// add new user
 router.post('/', (req, res, next) => {
-  const user = new User({
+  const referencePoint = new ReferencePoint({
     _id: new mongoose.Types.ObjectId(),
-    email: req.body.email,
-    rank: req.body.rank,
-    username: req.body.username,
-    password: req.body.password,
-    cardNumber: req.body.cardNumber,
-    cvv: req.body.cvv,
-    cardExpiration: req.body.cardExpiration,
-    registrationDate: Date.now()
+    coordinateX: req.body.coordinateX,
+    coordinateY: req.body.coordinateY,
+    space: req.body.space,
+    aps: req.body.aps,
+    additionDate: Date.now()
   })
-  user
+
+  referencePoint
     .save()
     .then(result => {
-      console.log(result)
+      console.log(referencePoint)
       res.status(201).json({
-        createdUser: user,
-        message: 'Posted user successfully'
+        createdReferencePoint: referencePoint,
+        message: 'referencePoint correctly posted'
       })
     })
     .catch(err => {
       console.log(err)
       res.status(500).json({
         error: err,
-        message: 'Could not add user'
+        message: 'Could not add referencePoint'
       })
     })
 })
 
-// get specific user
 router.get('/:id', (req, res, next) => {
   const id = req.params.id
-  User.findById(id).exec().then(doc => {
+  ReferencePoint.findById(id).exec().then(doc => {
     console.log('retrieved from database:', doc)
     if (doc) {
       res.status(200).json(doc)
@@ -73,10 +68,9 @@ router.get('/:id', (req, res, next) => {
   })
 })
 
-// delete a user
 router.delete('/:id', (req, res, next) => {
   const id = req.params.id
-  User.remove({ _id: id })
+  ReferencePoint.remove({ _id: id })
     .exec()
     .then(result => {
       res.status(200).json(result)
@@ -87,43 +81,7 @@ router.delete('/:id', (req, res, next) => {
     })
 })
 
-// correct user
-/*
-  IMPORTANT:
-  Object in request body must be an array such as:
-    [
-      {"propName": "name of the Property", "value": "Value of the property"}
-    ]
-
-   EXAMPLE - change user email and password
-    [
-      {"propName":"email", "value":"newEmail@test.com"},
-      {"propName":"password", "value":"hunter3"}
-    ]
- */
 router.patch('/:id', (req, res, next) => {
-  const id = req.params.id
-  const updateOps = {}
-
-  for (const ops of req.body) {
-    updateOps[ops.propName] = ops.value
-  }
-  User.update({ _id: id }, { $set: updateOps })
-    .exec()
-    .then(result => {
-      console.log(result)
-      res.status(200).json(result)
-    })
-    .catch(err => {
-      console.log(err)
-      res.status(500).json({
-        error: err
-      })
-    })
-})
-
-// handle login here
-router.post('/login', (req, res, next) => {
 
 })
 

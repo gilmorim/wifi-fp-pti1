@@ -5,10 +5,14 @@ const spaceSchema = mongoose.Schema({
   name: String,
   description: String,
   additionDate: Date,
-  owner: { ref: 'User' },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User' },
   imageFile: String,
   referencesCount: Number,
-  referencePoints: [{ ref: 'ReferencePoint' }]
+  referencePoints: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ReferencePoint' }]
 })
 
 module.exports = mongoose.model('Space', spaceSchema)
