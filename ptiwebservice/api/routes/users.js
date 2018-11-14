@@ -6,16 +6,27 @@ const mongoose = require('mongoose')
 // return all users
 router.get('/', (req, res, next) => {
   User.find()
+    .select('_id email rank username registrationDate')
     .exec()
     .then(docs => {
-      // check arguably not necessary
-      if (docs.length >= 0) {
-        res.status(200).json(docs)
-      } else {
-        res.status(404).json({
-          message: 'No entries found'
+      const response = {
+        count: docs.length,
+        users: docs.map(doc => {
+          return {
+            _id: doc._id,
+            email: doc.email,
+            rank: doc.rank,
+            username: doc.username,
+            registrationDate: doc.registrationDate,
+            request: {
+              description: 'To get more details about user ' + doc.username,
+              type: 'GET',
+              url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/users/' + doc._id
+            }
+          }
         })
       }
+      res.status(200).json(response)
     })
     .catch(err => {
       console.log(err)
@@ -43,8 +54,20 @@ router.post('/', (req, res, next) => {
     .then(result => {
       console.log(result)
       res.status(201).json({
-        createdUser: user,
-        message: 'Posted user successfully'
+        message: 'Created user successfully',
+        createdUser: {
+          _id: result.id,
+          email: result.email,
+          rank: result.rank,
+          username: result.username,
+          // not actually sure I should send sensitive information back password and card details
+          registrationDate: result.registrationDate
+        },
+        request: {
+          description: 'To get more details about user ' + result.username,
+          type: 'GET',
+          url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/users/' + result._id
+        }
       })
     })
     .catch(err => {
@@ -59,17 +82,27 @@ router.post('/', (req, res, next) => {
 // get specific user
 router.get('/:id', (req, res, next) => {
   const id = req.params.id
-  User.findById(id).exec().then(doc => {
-    console.log('retrieved from database:', doc)
-    if (doc) {
-      res.status(200).json(doc)
-    } else {
-      res.status(404).json({ message: 'No valid entry found for provided ID' })
-    }
-  }).catch(err => {
-    console.log(err)
-    res.status(500).json({ error: err })
-  })
+  User.findById(id)
+    .select('_id email rank username registrationDate')
+    .exec()
+    .then(doc => {
+      console.log('retrieved from database:', doc)
+      if (doc) {
+        res.status(200).json({
+          user: doc,
+          request: {
+            description: 'To get a list of all users',
+            type: 'GET',
+            url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/users/'
+          }
+        })
+      } else {
+        res.status(404).json({ message: 'No valid entry found for provided ID' })
+      }
+    }).catch(err => {
+      console.log(err)
+      res.status(500).json({ error: err })
+    })
 })
 
 // delete a user
@@ -78,7 +111,10 @@ router.delete('/:id', (req, res, next) => {
   User.remove({ _id: id })
     .exec()
     .then(result => {
-      res.status(200).json(result)
+      res.status(200).json({
+        // a bit redundant but ok
+        message: 'User successfully deleted'
+      })
     })
     .catch(err => {
       console.log(err)
@@ -110,8 +146,14 @@ router.patch('/:id', (req, res, next) => {
   User.update({ _id: id }, { $set: updateOps })
     .exec()
     .then(result => {
-      console.log(result)
-      res.status(200).json(result)
+      res.status(200).json({
+        message: 'User successfully updated',
+        request: {
+          description: 'To get info on updated user',
+          type: 'GET',
+          url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/users/' + id
+        }
+      })
     })
     .catch(err => {
       console.log(err)
