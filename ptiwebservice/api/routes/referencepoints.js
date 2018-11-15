@@ -5,17 +5,28 @@ const mongoose = require('mongoose')
 
 router.get('/', (req, res, next) => {
   ReferencePoint.find()
+    .select('_id coordinateX coordinateY space aps additionDate')
     .exec()
     .then(docs => {
-      console.log(docs)
-      // check arguably not necessary
-      if (docs.length >= 0) {
-        res.status(200).json(docs)
-      } else {
-        res.status(404).json({
-          message: 'No entries found'
+      const response = {
+        count: docs.length,
+        referencePoints: docs.map(doc => {
+          return {
+            _id: doc._id,
+            coordinateX: doc.coordinateX,
+            coordinateY: doc.coordinateY,
+            space: doc.space,
+            aps: doc.aps,
+            additionDate: doc.additionDate,
+            request: {
+              description: 'To get more details about this reference point ',
+              type: 'GET',
+              url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/referencepoints/' + doc._id
+            }
+          }
         })
       }
+      res.status(200).json(response)
     })
     .catch(err => {
       console.log(err)
@@ -38,10 +49,21 @@ router.post('/', (req, res, next) => {
   referencePoint
     .save()
     .then(result => {
-      console.log(referencePoint)
       res.status(201).json({
-        createdReferencePoint: referencePoint,
-        message: 'referencePoint correctly posted'
+        message: 'Created referencePoint successfully',
+        createdReferencePoint: {
+          _id: result._id,
+          coordinateX: result.coordinateX,
+          coordinateY: result.coordinateY,
+          space: result.space,
+          aps: result.aps,
+          additionDate: result.additionDate
+        },
+        request: {
+          description: 'To get information about this reference point ',
+          type: 'GET',
+          url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/referencepoints/' + result._id
+        }
       })
     })
     .catch(err => {
@@ -55,17 +77,27 @@ router.post('/', (req, res, next) => {
 
 router.get('/:id', (req, res, next) => {
   const id = req.params.id
-  ReferencePoint.findById(id).exec().then(doc => {
-    console.log('retrieved from database:', doc)
-    if (doc) {
-      res.status(200).json(doc)
-    } else {
-      res.status(404).json({ message: 'No valid entry found for provided ID' })
-    }
-  }).catch(err => {
-    console.log(err)
-    res.status(500).json({ error: err })
-  })
+  ReferencePoint.findById(id)
+    .select('_id coordinateX coordinateY space aps additionDate')
+    .exec()
+    .then(doc => {
+      console.log('retrieved from database:', doc)
+      if (doc) {
+        res.status(200).json({
+          user: doc,
+          request: {
+            description: 'To get a list of all reference points',
+            type: 'GET',
+            url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/referencepoints/'
+          }
+        })
+      } else {
+        res.status(404).json({ message: 'No valid entry found for provided ID' })
+      }
+    }).catch(err => {
+      console.log(err)
+      res.status(500).json({ error: err })
+    })
 })
 
 router.delete('/:id', (req, res, next) => {
@@ -73,7 +105,9 @@ router.delete('/:id', (req, res, next) => {
   ReferencePoint.remove({ _id: id })
     .exec()
     .then(result => {
-      res.status(200).json(result)
+      res.status(200).json({
+        message: 'Reference point successfully deleted'
+      })
     })
     .catch(err => {
       console.log(err)

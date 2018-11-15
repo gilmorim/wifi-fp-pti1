@@ -5,17 +5,43 @@ const Space = require('../models/space')
 
 router.get('/', (req, res, next) => {
   Space.find()
+    .select('_id name description additionDate owner imageFile referencePoints')
     .exec()
     .then(docs => {
-      console.log(docs)
-      // check arguably not necessary
-      if (docs.length >= 0) {
-        res.status(200).json(docs)
-      } else {
-        res.status(404).json({
-          message: 'No entries found'
+      const response = {
+        count: docs.length,
+        spaces: docs.map(doc => {
+          return {
+            _id: doc._id,
+            name: doc.name,
+            description: doc.description,
+            additionDate: doc.additionDate,
+            owner: doc.owner,
+            imageFile: doc.imageFile,
+            referencePoints: doc.referencePoints,
+            requests: {
+              space: {
+                description: 'To get more details about space ' + doc.name,
+                type: 'GET',
+                url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/spaces/' + doc._id
+              },
+              owner: {
+                description: 'To get more details about owner ',
+                type: 'GET',
+                url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/users/' + doc.owner
+              },
+              referencePoints: doc.referencePoints.map(result => {
+                return {
+                  description: 'To get more info on this reference point',
+                  type: 'GET',
+                  url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/referencepoints/' + result._id
+                }
+              })
+            }
+          }
         })
       }
+      res.status(200).json(response)
     })
     .catch(err => {
       console.log(err)
@@ -39,10 +65,18 @@ router.post('/', (req, res, next) => {
   space
     .save()
     .then(result => {
-      console.log(space)
       res.status(201).json({
-        createdSpace: space,
-        message: 'Space correctly posted'
+        message: 'Created space successfully',
+        createdSpace: {
+          _id: result.id,
+          name: result.name,
+          description: result.description,
+          request: {
+            description: 'To get more details about space ' + result.name,
+            type: 'GET',
+            url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/spaces/' + result._id
+          }
+        }
       })
     })
     .catch(err => {
@@ -56,17 +90,33 @@ router.post('/', (req, res, next) => {
 
 router.get('/:id', (req, res, next) => {
   const id = req.params.id
-  Space.findById(id).exec().then(doc => {
-    console.log('retrieved from database:', doc)
-    if (doc) {
-      res.status(200).json(doc)
-    } else {
-      res.status(404).json({ message: 'No valid entry found for provided ID' })
-    }
-  }).catch(err => {
-    console.log(err)
-    res.status(500).json({ error: err })
-  })
+  Space.findById(id)
+    .select('_id name description additionDate owner imageFile referencePoints')
+    .exec()
+    .then(doc => {
+      if (doc) {
+        res.status(200).json({
+          space: doc,
+          referencePoints: doc.referencePoints.map(result => {
+            return {
+              description: 'To get more info on this reference point',
+              type: 'GET',
+              url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/referencepoints/' + result._id
+            }
+          }),
+          request: {
+            description: 'To get a list of all spaces',
+            type: 'GET',
+            url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/spaces/'
+          }
+        })
+      } else {
+        res.status(404).json({ message: 'No valid entry found for provided ID' })
+      }
+    }).catch(err => {
+      console.log(err)
+      res.status(500).json({ error: err })
+    })
 })
 
 router.delete('/', (req, res, next) => {
@@ -74,7 +124,9 @@ router.delete('/', (req, res, next) => {
   Space.remove({ _id: id })
     .exec()
     .then(result => {
-      res.status(200).json(result)
+      res.status(200).json({
+        message: 'message deleted'
+      })
     })
     .catch(err => {
       console.log(err)

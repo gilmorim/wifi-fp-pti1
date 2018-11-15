@@ -60,7 +60,7 @@ router.post('/', (req, res, next) => {
           email: result.email,
           rank: result.rank,
           username: result.username,
-          // not actually sure I should send sensitive information back password and card details
+          // not actually sure if and how I should send sensitive information back like password and card details
           registrationDate: result.registrationDate
         },
         request: {
@@ -149,7 +149,7 @@ router.patch('/:id', (req, res, next) => {
       res.status(200).json({
         message: 'User successfully updated',
         request: {
-          description: 'To get info on updated user',
+          description: 'To get full info on updated user',
           type: 'GET',
           url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/users/' + id
         }
