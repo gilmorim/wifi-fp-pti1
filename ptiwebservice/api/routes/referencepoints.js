@@ -78,6 +78,7 @@ router.post('/', (req, res, next) => {
 router.get('/:id', (req, res, next) => {
   const id = req.params.id
   ReferencePoint.findById(id)
+    .populate('space', 'referecePoints _id description additionDate owner imageFile referencesCount')
     .select('_id coordinateX coordinateY space aps additionDate')
     .exec()
     .then(doc => {

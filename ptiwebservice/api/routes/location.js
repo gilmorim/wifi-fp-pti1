@@ -33,6 +33,7 @@ router.post('/', (req, res, next) => {
 router.get('/:id', (req, res, next) => {
   const id = req.params.id
   Location.findById(id)
+    .populate('space')
     .select('_id space date')
     .exec()
     .then(doc => {
