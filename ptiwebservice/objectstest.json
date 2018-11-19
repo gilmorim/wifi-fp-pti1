@@ -1,19 +1,9 @@
 /*================= CURRENT TEST USER ====================*/
 {
-  "_id": {
-    "$oid": "5be95437772f511c266fa626"
-  },
   "email": "test@test.com",
   "rank": "premium",
   "username": "deez_nuts",
   "password": "hunter2",
-  "cardNumber": "0001012030123",
-  "cvv": "382",
-  "cardExpiration": "09/19",
-  "registrationDate": "01 Jan 2015",
-  "__v": {
-    "$numberInt": "0"
-  }
 }
 
 /*=================== TEST SPACE =========================*/

@@ -90,7 +90,7 @@ router.post('/', (req, res, next) => {
 router.get('/:id', (req, res, next) => {
   const id = req.params.id
   Space.findById(id)
-    .populate('owner referencePoints', '_id coordinateX coordinateY space aps email rank username')
+    .populate('owner referencePoints', '_id coordinateX coordinateY space aps email rank firstName lastName')
     .select('_id name description additionDate owner imageFile referencePoints')
     .populate()
     .exec()
