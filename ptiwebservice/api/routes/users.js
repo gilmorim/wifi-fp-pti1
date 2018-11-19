@@ -40,14 +40,11 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const user = new User({
     _id: new mongoose.Types.ObjectId(),
+    registrationDate: Date.now(),
     email: req.body.email,
     rank: req.body.rank,
     username: req.body.username,
-    password: req.body.password,
-    cardNumber: req.body.cardNumber,
-    cvv: req.body.cvv,
-    cardExpiration: req.body.cardExpiration,
-    registrationDate: Date.now()
+    password: req.body.password
   })
   user
     .save()
@@ -60,7 +57,6 @@ router.post('/', (req, res, next) => {
           email: result.email,
           rank: result.rank,
           username: result.username,
-          // not actually sure if and how I should send sensitive information back like password and card details
           registrationDate: result.registrationDate
         },
         request: {
@@ -86,15 +82,9 @@ router.get('/:id', (req, res, next) => {
     .select('_id email rank username registrationDate')
     .exec()
     .then(doc => {
-      console.log('retrieved from database:', doc)
       if (doc) {
         res.status(200).json({
-          user: doc,
-          request: {
-            description: 'To get a list of all users',
-            type: 'GET',
-            url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/users/'
-          }
+          user: doc
         })
       } else {
         res.status(404).json({ message: 'No valid entry found for provided ID' })

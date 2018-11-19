@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 
 router.get('/', (req, res, next) => {
   ReferencePoint.find()
-    .select('_id coordinateX coordinateY space aps additionDate')
+    .select('_id coordinateX coordinateY space')
     .exec()
     .then(docs => {
       const response = {
@@ -16,8 +16,6 @@ router.get('/', (req, res, next) => {
             coordinateX: doc.coordinateX,
             coordinateY: doc.coordinateY,
             space: doc.space,
-            aps: doc.aps,
-            additionDate: doc.additionDate,
             request: {
               description: 'To get more details about this reference point ',
               type: 'GET',
@@ -55,9 +53,7 @@ router.post('/', (req, res, next) => {
           _id: result._id,
           coordinateX: result.coordinateX,
           coordinateY: result.coordinateY,
-          space: result.space,
-          aps: result.aps,
-          additionDate: result.additionDate
+          space: result.space
         },
         request: {
           description: 'To get information about this reference point ',
@@ -78,19 +74,14 @@ router.post('/', (req, res, next) => {
 router.get('/:id', (req, res, next) => {
   const id = req.params.id
   ReferencePoint.findById(id)
-    .populate('space', 'referecePoints _id description additionDate owner imageFile referencesCount')
+    .populate('space', 'referecePoints _id owner')
     .select('_id coordinateX coordinateY space aps additionDate')
     .exec()
     .then(doc => {
       console.log('retrieved from database:', doc)
       if (doc) {
         res.status(200).json({
-          user: doc,
-          request: {
-            description: 'To get a list of all reference points',
-            type: 'GET',
-            url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/referencepoints/'
-          }
+          user: doc
         })
       } else {
         res.status(404).json({ message: 'No valid entry found for provided ID' })

@@ -18,18 +18,6 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  cardNumber: {
-    type: String,
-    required: true
-  },
-  cvv: {
-    type: Number,
-    required: true
-  },
-  cardExpiration: {
-    type: String,
-    required: true
-  },
   registrationDate: Date
 })
 

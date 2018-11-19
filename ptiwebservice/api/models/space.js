@@ -18,8 +18,7 @@ const spaceSchema = mongoose.Schema({
   },
   referencePoints: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'ReferencePoint' }],
-  referencesCount: Number
+    ref: 'ReferencePoint' }]
 })
 
 module.exports = mongoose.model('Space', spaceSchema)

@@ -54,8 +54,8 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const space = new Space({
     _id: new mongoose.Types.ObjectId(),
-    description: req.body.description,
     additionDate: Date.now(),
+    description: req.body.description,
     owner: req.body.owner,
     imageFile: req.body.imageFile,
     referencesCount: req.body.referencePoints.length,
@@ -70,7 +70,6 @@ router.post('/', (req, res, next) => {
         createdSpace: {
           _id: result.id,
           name: result.name,
-          description: result.description,
           request: {
             description: 'To get more details about space ' + result.name,
             type: 'GET',
@@ -105,12 +104,7 @@ router.get('/:id', (req, res, next) => {
               type: 'GET',
               url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/referencepoints/' + result._id
             }
-          }),
-          request: {
-            description: 'To get a list of all spaces',
-            type: 'GET',
-            url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/spaces/'
-          }
+          })
         })
       } else {
         res.status(404).json({ message: 'No valid entry found for provided ID' })
@@ -127,7 +121,7 @@ router.delete('/', (req, res, next) => {
     .exec()
     .then(result => {
       res.status(200).json({
-        message: 'message deleted'
+        message: 'Space successfully deleted'
       })
     })
     .catch(err => {
