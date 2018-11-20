@@ -10,7 +10,8 @@ const userSchema = mongoose.Schema({
   },
   rank: {
     type: String,
-    required: true
+    required: true,
+    enum: ['owner', 'premium', 'admin']
   },
   firstName: {
     type: String,

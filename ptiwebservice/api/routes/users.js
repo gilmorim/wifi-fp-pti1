@@ -3,6 +3,7 @@ const router = express.Router()
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+// const checkAuth = require('../middleware/check-auth')
 
 const User = require('../models/user')
 
@@ -40,66 +41,8 @@ router.get('/', (req, res, next) => {
     })
 })
 
-// add new owner
-router.post('/register/owner', (req, res, next) => {
-  User.find({ email: req.body.email })
-    .exec()
-    .then(user => {
-      if (user.length >= 1) {
-        return res.status(409).json({
-          message: 'Registration failed'
-        })
-      } else {
-        bcrypt.hash(req.body.password, 10, (err, hash) => {
-          if (err) {
-            return res.status(500).json({
-              error: err
-            })
-          } else {
-            const user = new User({
-              _id: new mongoose.Types.ObjectId(),
-              registrationDate: Date.now(),
-              firstName: req.body.firstName,
-              lastName: req.body.lastName,
-              email: req.body.email,
-              password: hash,
-              rank: 'owner'
-            })
-            user
-              .save()
-              .then(result => {
-                console.log(result)
-                res.status(201).json({
-                  message: 'Created user successfully',
-                  createdUser: {
-                    _id: result.id,
-                    email: result.email,
-                    rank: result.rank,
-                    firstName: result.firstName,
-                    lastName: result.lastName
-                  },
-                  request: {
-                    description: 'To get more details about user ' + result.firstName + ' ' + result.lastName,
-                    type: 'GET',
-                    url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/users/' + result._id
-                  }
-                })
-              })
-              .catch(err => {
-                console.log(err)
-                res.status(500).json({
-                  error: err,
-                  message: 'Could not add user'
-                })
-              })
-          }
-        })
-      }
-    })
-})
-
 // add new premium
-router.post('/register/premium', (req, res, next) => {
+router.post('/register', (req, res, next) => {
   bcrypt.hash(req.body.password, 10, (err, hash) => {
     if (err) {
       return res.status(500).json({
@@ -113,7 +56,7 @@ router.post('/register/premium', (req, res, next) => {
         lastName: req.body.lastName,
         email: req.body.email,
         password: hash,
-        rank: 'premium'
+        rank: req.body.rank
       })
       user
         .save()
@@ -243,7 +186,8 @@ router.post('/login', (req, res, next) => {
         if (result) {
           const token = jwt.sign({
             email: user[0].email,
-            _id: user[0]._id
+            _id: user[0]._id,
+            rank: user[0].rank
           }, process.env.JWT_KEY,
           {
             expiresIn: '1h'

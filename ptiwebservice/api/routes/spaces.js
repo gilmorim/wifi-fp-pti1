@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
+const checkAuth = require('../middleware/check-auth')
 const Space = require('../models/space')
 
-router.get('/', (req, res, next) => {
+router.get('/', checkAuth, (req, res, next) => {
   Space.find()
     .select('_id name description additionDate owner imageFile referencePoints')
     .exec()
