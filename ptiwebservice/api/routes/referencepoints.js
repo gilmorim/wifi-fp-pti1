@@ -1,15 +1,16 @@
 const express = require('express')
 const router = express.Router()
 const ReferencePoints = require('../controllers/referencepoints')
+const checkAuth = require('../middleware/check-auth')
 
-router.get('/', ReferencePoints.referencepoints_get_all)
+router.get('/', checkAuth.requireAdmin, ReferencePoints.referencepoints_get_all)
 
-router.post('/', ReferencePoints.referencepoints_add)
+router.post('/', checkAuth.requireOwner, ReferencePoints.referencepoints_add)
 
-router.get('/:id', ReferencePoints.referencepoints_get_specific)
+router.get('/:id', checkAuth.requireOwner, ReferencePoints.referencepoints_get_specific)
 
-router.delete('/:id', ReferencePoints.referencepoints_delete)
+router.delete('/:id', checkAuth.requireAdmin, ReferencePoints.referencepoints_delete)
 
-router.patch('/:id', ReferencePoints.referencepoints_correct)
+router.patch('/:id', checkAuth.requireOwner, ReferencePoints.referencepoints_correct)
 
 module.exports = router
