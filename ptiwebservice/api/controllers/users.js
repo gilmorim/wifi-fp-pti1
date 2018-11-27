@@ -155,7 +155,8 @@ exports.users_login = (req, res, next) => {
         })
       }
       bcrypt.compare(req.body.password, user[0].password, (err, result) => {
-        if (err) {
+        if (!result) {
+          console.log(err)
           return res.status(401).json({
             message: 'Auth failed'
           })

@@ -1,8 +1,8 @@
 {
 	"env":{
 		"MONGO_ATLAS_PW" : "12345",
-		"PORT": "80",
-		"AWS_URL": "ec2-18-130-62-41.eu-west-2.compute.amazonaws.com",
+		"PORT": "3000",
+		"AWS_URL": "localhost",
 		"JWT_KEY": "testkey"
 	}
 }

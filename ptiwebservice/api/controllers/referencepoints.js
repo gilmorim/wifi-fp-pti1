@@ -106,5 +106,28 @@ exports.referencepoints_delete = (req, res, next) => {
 }
 
 exports.referencepoints_correct = (req, res, next) => {
+  const id = req.params.id
+  const updateOps = {}
 
+  for (const ops of req.body) {
+    updateOps[ops.propName] = ops.value
+  }
+  ReferencePoint.update({ _id: id }, { $set: updateOps })
+    .exec()
+    .then(result => {
+      res.status(200).json({
+        message: 'Reference point successfully updated',
+        request: {
+          description: 'To get full info on updated reference point',
+          type: 'GET',
+          url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/referencepoints/' + id
+        }
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({
+        error: err
+      })
+    })
 }

@@ -129,4 +129,28 @@ exports.spaces_delete = (req, res, next) => {
 }
 
 exports.spaces_correct = (req, res, next) => {
+  const id = req.params.id
+  const updateOps = {}
+
+  for (const ops of req.body) {
+    updateOps[ops.propName] = ops.value
+  }
+  Space.update({ _id: id }, { $set: updateOps })
+    .exec()
+    .then(result => {
+      res.status(200).json({
+        message: 'Space successfully updated',
+        request: {
+          description: 'To get full info on updated space',
+          type: 'GET',
+          url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/spaces/' + id
+        }
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({
+        error: err
+      })
+    })
 }
