@@ -50,4 +50,27 @@ exports.location_get_specific = (req, res, next) => {
 }
 
 exports.location_correction = (req, res, next) => {
+  const location = new Location({
+    _id: mongoose.Types.ObjectId(),
+    aps: req.body.aps,
+    date: Date.now()
+  })
+
+  location
+    .save()
+    .then(result => {
+      // actually here should be the algorithm to detect geographical location
+      console.log('received location ' + result)
+      res.status(200).json({
+        location: location,
+        message: 'Location received successfully'
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({
+        error: err,
+        message: 'Could not get location'
+      })
+    })
 }

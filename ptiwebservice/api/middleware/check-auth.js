@@ -25,10 +25,12 @@ exports.requirePremium = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1]
     const decoded = jwt.verify(token, process.env.JWT_KEY)
     req.userData = decoded
-    console.log(req.userData)
+    // console.log(req.userData)
     if (req.userData.rank.includes('premium') || req.userData.rank.includes('admin')) {
+      console.log('Access authorized')
       next()
     } else {
+      console.log('Denied attempt')
       return res.status(401).json({
         message: 'You do not have permission for that'
       })
@@ -45,7 +47,7 @@ exports.requireAdmin = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1]
     const decoded = jwt.verify(token, process.env.JWT_KEY)
     req.userData = decoded
-    console.log(req.userData)
+    // console.log(req.userData)
     if (req.userData.rank.includes('admin')) {
       next()
     } else {
