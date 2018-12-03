@@ -1,4 +1,5 @@
 const User = require('../models/user')
+const Space = require('../models/space')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
@@ -171,10 +172,17 @@ exports.users_login = (req, res, next) => {
             expiresIn: '1h'
           }
           )
-          return res.status(200).json({
-            message: 'Auth successful',
-            token: token
-          })
+          Space.find({ owner: user[0]._id })
+            .select('_id')
+            .exec()
+            .then(userSpaces => {
+              return res.status(200).json({
+                message: 'Auth successful',
+                token: token,
+                userId: user[0]._id,
+                spaces: userSpaces
+              })
+            })
         }
       })
     })

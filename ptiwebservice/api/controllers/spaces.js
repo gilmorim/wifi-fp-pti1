@@ -53,6 +53,7 @@ exports.spaces_add = (req, res, next) => {
   const space = new Space({
     _id: new mongoose.Types.ObjectId(),
     additionDate: Date.now(),
+    name: req.body.name,
     description: req.body.description,
     owner: req.body.owner,
     imageFile: req.body.imageFile,
@@ -96,7 +97,7 @@ exports.spaces_get_specific = (req, res, next) => {
       if (doc) {
         res.status(200).json({
           space: doc,
-          referencePoints: doc.referencePoints.map(result => {
+          referencePointsRequests: doc.referencePoints.map(result => {
             return {
               description: 'To get more info on this reference point',
               type: 'GET',

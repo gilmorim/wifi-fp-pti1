@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 
 exports.referencepoints_get_all = (req, res, next) => {
   ReferencePoint.find()
-    .select('_id coordinateX coordinateY space')
+    .select('_id coordinateX coordinateY space aps')
     .exec()
     .then(docs => {
       const response = {
@@ -14,6 +14,7 @@ exports.referencepoints_get_all = (req, res, next) => {
             coordinateX: doc.coordinateX,
             coordinateY: doc.coordinateY,
             space: doc.space,
+            aps: doc.aps,
             request: {
               description: 'To get more details about this reference point ',
               type: 'GET',

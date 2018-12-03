@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Location = require('../models/location')
+const ReferencePoint = require('../models/referencePoint')
 
 exports.location_fingerprint = (req, res, next) => {
   const location = new Location({
@@ -12,11 +13,31 @@ exports.location_fingerprint = (req, res, next) => {
     .save()
     .then(result => {
       // actually here should be the algorithm to detect geographical location
-      console.log(result)
-      res.status(200).json({
-        location: location,
-        message: 'Location received successfully'
+      const macAddresses = []
+      for (var ap in req.body.aps) { macAddresses.push(req.body.aps[ap].mac) }
+      ReferencePoint.find({
+        aps: {
+          $elemMatch: {
+            mac: {
+              $in: macAddresses
+            }
+          }
+        }
       })
+        .populate('space', '_id name description imageFile')
+        .select('_id coordinateX coordinateY space aps additionDate')
+        .exec()
+        .then(doc => {
+          if (doc.length < 1) {
+            res.status(404).json({
+              message: 'Could not find reference point'
+            })
+          } else {
+            res.status(200).json({
+              doc: doc
+            })
+          }
+        })
     })
     .catch(err => {
       console.log(err)
