@@ -170,8 +170,7 @@ exports.users_login = (req, res, next) => {
           }, process.env.JWT_KEY,
           {
             expiresIn: '1h'
-          }
-          )
+          })
           Space.find({ owner: user[0]._id })
             .select('_id')
             .exec()
@@ -179,9 +178,14 @@ exports.users_login = (req, res, next) => {
               return res.status(200).json({
                 message: 'Auth successful',
                 token: token,
-                userId: user[0]._id,
                 spaces: userSpaces
               })
+            })
+            .catch(err => {
+              res.status(500).json({
+                err: err
+              })
+              console.log(err)
             })
         }
       })
