@@ -178,7 +178,8 @@ exports.users_login = (req, res, next) => {
               return res.status(200).json({
                 message: 'Auth successful',
                 token: token,
-                spaces: userSpaces
+                spaces: userSpaces,
+                userId: user[0]._id
               })
             })
             .catch(err => {
