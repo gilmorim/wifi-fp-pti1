@@ -1,0 +1,3 @@
+exports.findLocation = (fingerprint, doc) => {
+
+}

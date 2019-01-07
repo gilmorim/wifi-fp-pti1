@@ -16,13 +16,10 @@ exports.location_fingerprint = (req, res, next) => {
       const macAddresses = []
       for (var ap in req.body.aps) { macAddresses.push(req.body.aps[ap].mac) }
       ReferencePoint.find({
-        aps: {
-          $elemMatch: {
-            mac: {
-              $in: macAddresses
-            }
-          }
+        'aps.mac': {
+          $in: macAddresses
         }
+
       })
         .populate('space', '_id name description imageFile')
         .select('_id coordinateX coordinateY space aps additionDate')
@@ -36,18 +33,6 @@ exports.location_fingerprint = (req, res, next) => {
             })
           } else {
             /* here should choose the one with the most common access points */
-            doc.forEach((element, index) => {
-              ReferencePoint.aggregate([
-                {
-                  $match: {
-                    mac: { $in: macAddresses }
-                  }
-                },
-                {
-                  $group:
-                }
-              ])
-            })
             res.status(200).json({
               doc: doc
             })
