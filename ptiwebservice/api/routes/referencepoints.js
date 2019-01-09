@@ -9,7 +9,7 @@ router.post('/', /* checkAuth.requireOwner, */ ReferencePoints.referencepoints_a
 
 router.get('/:id', checkAuth.requireOwner, ReferencePoints.referencepoints_get_specific)
 
-router.delete('/:id', checkAuth.requireAdmin, ReferencePoints.referencepoints_delete)
+router.delete('/:id', /* checkAuth.requireAdmin, */ ReferencePoints.referencepoints_delete)
 
 router.patch('/:id', checkAuth.requireOwner, ReferencePoints.referencepoints_correct)
 

@@ -1,6 +1,4 @@
 const mongoose = require('mongoose')
-const multer = require('multer')
-const uploads = multer({ dest: '../public/images/' })
 const Space = require('../models/space')
 
 exports.spaces_get_all = (req, res, next) => {
@@ -58,8 +56,7 @@ exports.spaces_add = (req, res, next) => {
     name: req.body.name,
     description: req.body.description,
     owner: req.body.owner,
-    imageFile: req.body.imageFile,
-    referencesCount: req.body.referencePoints.length,
+    imageFile: req.file.path,
     referencePoints: req.body.referencePoints
   })
 

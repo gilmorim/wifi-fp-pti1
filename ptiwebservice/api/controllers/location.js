@@ -15,29 +15,43 @@ exports.location_fingerprint = (req, res, next) => {
       // actually here should be the algorithm to detect geographical location
       const macAddresses = []
       for (var ap in req.body.aps) { macAddresses.push(req.body.aps[ap].mac) }
-      ReferencePoint.find({
-        'aps.mac': {
-          $in: macAddresses
-        }
-
-      })
-        .populate('space', '_id name description imageFile')
-        .select('_id coordinateX coordinateY space aps additionDate')
-        .exec()
-        .then(doc => {
-          /* change below number to 3 */
-          if (doc.length < 1) {
-            res.status(404).json({
-              foundRps: doc.length,
-              message: 'Could not find enough reference points'
-            })
-          } else {
-            /* here should choose the one with the most common access points */
-            res.status(200).json({
-              doc: doc
-            })
+      ReferencePoint.aggregate([{
+        $match: {
+          aps: {
+            $elemMatch: {
+              mac: {
+                $in: macAddresses
+              }
+            }
           }
-        })
+        }/* ideally would have kept going with aggregate framework, but time ran short... */
+      }], (err, docs) => {
+        if (err) console.log(err)
+        else {
+          var bestChoice = {
+            commonMacs: 0,
+            refPointId: '',
+            index: 0
+          }
+
+          for (var i = 0; i !== docs.length; i++) {
+            var commonMacs = 0
+            for (var j = 0; j !== docs[i].aps.length; j++) {
+              for (var k = 0; k !== macAddresses.length; k++) {
+                if (macAddresses[k] === docs[i].aps[j].mac) {
+                  commonMacs++
+                }
+              }
+            }
+            if (commonMacs > bestChoice.commonMacs) {
+              bestChoice.commonMacs = commonMacs
+              bestChoice.refPointId = docs[i]._id
+              bestChoice.index = i
+            }
+          }
+          res.status(200).json({ doc: docs[bestChoice.index] })
+        }
+      })
     })
     .catch(err => {
       console.log(err)

@@ -36,6 +36,7 @@ app.use((res, req, next) => {
 
 // parse json objects
 app.use(bodyParser.json())
+app.use('/public', express.static('public'))
 app.use('/location', locationRoutes)
 app.use('/spaces', spacesRoutes)
 app.use('/users', usersRoutes)
