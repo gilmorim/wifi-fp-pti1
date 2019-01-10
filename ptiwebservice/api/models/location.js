@@ -10,7 +10,11 @@ const locationSchema = mongoose.Schema({
     type: [{ mac: String, intensity: Number }],
     required: true
   },
-  date: Date
+  date: {
+    type: Date,
+    expires: '5s',
+    default: Date.now()
+  }
 })
 
 module.exports = mongoose.model('Location', locationSchema)

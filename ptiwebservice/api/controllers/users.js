@@ -179,7 +179,8 @@ exports.users_login = (req, res, next) => {
                 message: 'Auth successful',
                 token: token,
                 spaces: userSpaces,
-                userId: user[0]._id
+                userId: user[0]._id,
+                rank: user[0].rank
               })
             })
             .catch(err => {
