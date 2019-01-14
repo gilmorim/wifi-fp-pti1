@@ -6,7 +6,7 @@ exports.requireOwner = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_KEY)
     req.userData = decoded
     console.log(req.userData)
-    if (req.userData.rank.includes('owner') || req.userData.rank.includes('admin')) {
+    if (req.userData.rank === 'owner' || req.userData.rank === 'admin') {
       next()
     } else {
       return res.status(401).json({
@@ -26,7 +26,7 @@ exports.requirePremium = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_KEY)
     req.userData = decoded
     // console.log(req.userData)
-    if (req.userData.rank.includes('premium') || req.userData.rank.includes('admin')) {
+    if (req.userData.rank === 'premium' || req.userData.rank.includes === 'admin') {
       console.log('Access authorized')
       next()
     } else {
@@ -48,7 +48,7 @@ exports.requireAdmin = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_KEY)
     req.userData = decoded
     // console.log(req.userData)
-    if (req.userData.rank.includes('admin')) {
+    if (req.userData.rank === 'admin') {
       next()
     } else {
       return res.status(401).json({
