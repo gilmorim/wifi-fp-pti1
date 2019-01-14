@@ -1,3 +1,0 @@
-exports.findLocation = (fingerprint, doc) => {
-
-}

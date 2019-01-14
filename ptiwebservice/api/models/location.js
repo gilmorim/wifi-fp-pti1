@@ -12,7 +12,7 @@ const locationSchema = mongoose.Schema({
   },
   date: {
     type: Date,
-    expires: '5s',
+    expires: '1m',
     default: Date.now()
   }
 })
