@@ -17,7 +17,10 @@ const referencePointSchema = mongoose.Schema({
   },
   aps: {
     type: [{
-      mac: String,
+      mac: {
+        type: String,
+        match: /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/
+      },
       intensity: Number
     }],
     required: true
