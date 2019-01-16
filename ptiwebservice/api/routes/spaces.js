@@ -1,4 +1,6 @@
 const express = require('express')
+const mongoose = require('mongoose')
+const Space = require('../models/space')
 const router = express.Router()
 const SpacesController = require('../controllers/spaces')
 
@@ -29,7 +31,41 @@ const upload = multer({
 
 router.get('/', /* checkAuth.requireOwner, */ SpacesController.spaces_get_all)
 
-router.post('/', /* checkAuth.requireOwner, */ upload.single('imageFile'), SpacesController.spaces_add)
+router.post('/', /* checkAuth.requireOwner, */ upload.single('imageFile'), (req, res, next) => {
+  const space = new Space({
+    _id: new mongoose.Types.ObjectId(),
+    additionDate: Date.now(),
+    name: req.body.name,
+    description: req.body.description,
+    owner: req.body.owner,
+    imageFile: req.file.path,
+    referencePoints: req.body.referencePoints
+  })
+
+  space
+    .save()
+    .then(result => {
+      res.status(201).json({
+        message: 'Created space successfully',
+        createdSpace: {
+          _id: result.id,
+          name: result.name,
+          request: {
+            description: 'To get more details about space ' + result.name,
+            type: 'GET',
+            url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/spaces/' + result._id
+          }
+        }
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({
+        error: err,
+        message: 'Could not add space'
+      })
+    })
+})
 
 router.get('/:id', /* checkAuth.requireOwner, */ SpacesController.spaces_get_specific)
 
