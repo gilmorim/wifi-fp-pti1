@@ -22,18 +22,18 @@ mongoose.Promise = global.Promise
 // logging tool
 app.use(morgan('dev'))
 
-// parse urls
-app.use(bodyParser.urlencoded(({
-  extended: true,
-  limit: '50mb'
-})))
-
 // CORS errors
 app.use((res, req, next) => {
   res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
   next()
 })
+
+// parse urls
+app.use(bodyParser.urlencoded(({
+  extended: true,
+  limit: '50mb'
+})))
 
 // parse json objects
 app.use(bodyParser.json({
