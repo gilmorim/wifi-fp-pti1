@@ -24,7 +24,8 @@ app.use(morgan('dev'))
 
 // parse urls
 app.use(bodyParser.urlencoded(({
-  extended: false
+  extended: true,
+  limit: '50mb'
 })))
 
 // CORS errors
@@ -35,7 +36,9 @@ app.use((res, req, next) => {
 })
 
 // parse json objects
-app.use(bodyParser.json())
+app.use(bodyParser.json({
+  limit: '50mb'
+}))
 app.use('/public', express.static('public'))
 app.use('/location', locationRoutes)
 app.use('/spaces', spacesRoutes)
