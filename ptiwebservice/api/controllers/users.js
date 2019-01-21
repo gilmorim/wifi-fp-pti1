@@ -172,7 +172,7 @@ exports.users_login = (req, res, next) => {
             expiresIn: '1h'
           })
           Space.find({ owner: user[0]._id })
-            .select('_id')
+            .select('_id name description')
             .exec()
             .then(userSpaces => {
               return res.status(200).json({

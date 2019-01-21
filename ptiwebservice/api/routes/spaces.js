@@ -25,8 +25,8 @@ const upload = multer({
   storage: storage,
   limits: {
     filesize: 1024 * 1024 * 10 // 10 Mb file size or less
-  },
-  fileFilter: fileFilter
+  }/*,
+  fileFilter: fileFilter */
 })
 
 router.get('/', /* checkAuth.requireOwner, */ SpacesController.spaces_get_all)
