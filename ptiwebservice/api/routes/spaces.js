@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const Space = require('../models/space')
 const router = express.Router()
 const SpacesController = require('../controllers/spaces')
+const checkAuth = require('../middleware/check-auth')
 
 const multer = require('multer')
 const storage = multer.diskStorage({
@@ -14,13 +15,14 @@ const storage = multer.diskStorage({
   }
 })
 
-const fileFilter = (req, file, callback) => {
+/* const fileFilter = (req, file, callback) => {
   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
     callback(null, true)
   } else {
     callback(null, false)
   }
-}
+} */
+
 const upload = multer({
   storage: storage,
   limits: {
@@ -29,9 +31,9 @@ const upload = multer({
   fileFilter: fileFilter */
 })
 
-router.get('/', /* checkAuth.requireOwner, */ SpacesController.spaces_get_all)
+router.get('/', checkAuth.requireOwner, SpacesController.spaces_get_all)
 
-router.post('/', /* checkAuth.requireOwner, */ upload.single('imageFile'), (req, res, next) => {
+router.post('/', checkAuth.requireOwner, upload.single('imageFile'), (req, res, next) => {
   const space = new Space({
     _id: new mongoose.Types.ObjectId(),
     additionDate: Date.now(),

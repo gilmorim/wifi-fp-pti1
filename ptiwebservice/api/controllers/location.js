@@ -12,7 +12,7 @@ exports.location_fingerprint = (req, res, next) => {
   location
     .save()
     .then(result => {
-      // actually here should be the algorithm to detect geographical location
+
       const macAddresses = []
       for (var ap in req.body.aps) { macAddresses.push(req.body.aps[ap].mac) }
       ReferencePoint.aggregate([{
@@ -24,7 +24,7 @@ exports.location_fingerprint = (req, res, next) => {
               }
             }
           }
-        }/* ideally would have kept going with aggregate framework, but time ran short... */
+        }
       }], (err, docs) => {
         if (err) console.log(err)
         else {
