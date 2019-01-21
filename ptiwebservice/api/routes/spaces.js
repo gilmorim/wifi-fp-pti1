@@ -45,7 +45,7 @@ router.post('/', /* checkAuth.requireOwner, */ upload.single('imageFile'), (req,
   space
     .save()
     .then(result => {
-      res.status(201).json({
+      /* res.status(201).json({
         message: 'Created space successfully',
         createdSpace: {
           _id: result.id,
@@ -56,7 +56,9 @@ router.post('/', /* checkAuth.requireOwner, */ upload.single('imageFile'), (req,
             url: 'http://' + process.env.AWS_URL + ':' + process.env.PORT + '/spaces/' + result._id
           }
         }
-      })
+      }) */
+
+      res.status(201).send(result.id)
     })
     .catch(err => {
       console.log(err)
